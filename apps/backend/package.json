@@ -8,11 +8,13 @@
   },
   "dependencies": {
     "@prisma/client": "^6.16.3",
+    "amqplib": "^0.10.9",
     "express": "^5.1.0",
     "express-openid-connect": "^2.19.2",
     "prisma": "^6.16.3"
   },
   "devDependencies": {
+    "@types/amqplib": "^0.10.7",
     "@types/express": "^5.0.3"
   }
 }
