@@ -7,9 +7,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Exempelmodell
 model User {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  name  String
-  email String @unique
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  role      String?
+  basket    Basket?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  introduction String?
+  body         String?
+  description  String?
+  price        Int
+  status       Boolean?
+  stock        Int?
+  basket_ids   String[] @db.ObjectId
+  baskets      Basket[] @relation(fields: [basket_ids], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Basket {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  user        User      @relation(fields: [user_id], references: [id])
+  user_id     String    @unique @db.ObjectId
+  products    Product[] @relation(fields: [product_ids], references: [id])
+  product_ids String[] @db.ObjectId
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  order Order?
+}
+
+model Order {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  basket Basket @relation(fields: [basket_id], references: [id])
+  basket_id String @unique @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
