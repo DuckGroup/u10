@@ -22,7 +22,6 @@ export const MobileSidebar = () => {
   return (
     <>
       <header className="flex items-center justify-between p-4 bg-stone-50 border-b border-stone-200 md:hidden fixed top-0 left-0 right-0 z-50">
-        <Image src="/elana_logo.svg" alt="Elana logo" width={120} height={60} />
 
         <button
           onClick={() => setIsOpen(!isOpen)}

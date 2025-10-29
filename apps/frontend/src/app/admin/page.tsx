@@ -1,3 +1,9 @@
+import OrderTracker from "../components/orderTracker";
+
 export default function AdminPage() {
-  return <section></section>;
+  return (
+    <section className="p-8">
+      <OrderTracker />
+    </section>
+  );
 }

@@ -24,3 +24,14 @@ export async function getProductsByTitle(query: string): Promise<Product[]> {
   const products = res.data.data;
   return Array.isArray(products) ? products : [];
 }
+
+export interface OrderStats {
+  totalOrders: number;
+  activeOrders: number;
+  shippingOrders: number;
+}
+
+export async function getOrderStats(): Promise<OrderStats> {
+  const res = await api.get("/orders/stats");
+  return res.data.data;
+}
