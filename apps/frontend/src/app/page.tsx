@@ -2,16 +2,18 @@
 import "./globals.css";
 import { Header } from "./components/header";
 import { useEffect, useState } from "react";
-import { getProducts, getProductsByTitle } from "@/lib/api";
+import { getProducts, getProductsByTitle, getUsers } from "@/lib/api";
 import { Product } from "@/types/product";
+import { User } from "@/types/user";
 import { ProductDisplay } from "./components/products/productDisplay";
 import { SearchBar } from "./components/searchBar";
+import { UserTable } from "./components/admin/usertable";
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
-    // const session = await auth0.getSession();
     async function fetchProducts() {
       try {
         const data = await getProducts();
@@ -22,6 +24,20 @@ export default function Home() {
     }
 
     fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const data = await getUsers();
+        console.log("Fetched users in page:", data);
+        setUsers(data);
+      } catch (error: unknown) {
+        console.error("Failed to fetch users:", error);
+      }
+    }
+
+    fetchUsers();
   }, []);
 
   return (
@@ -39,7 +55,7 @@ export default function Home() {
           onSearch={async (query) => {
             try {
               const result = await getProductsByTitle(query);
-              console.log(result)
+              console.log(result);
               setProducts(result ?? []);
             } catch (error: unknown) {
               console.error("Search failed:", error);
@@ -50,6 +66,7 @@ export default function Home() {
         />
       </section>
       <ProductDisplay products={products} />
+      <UserTable users={users} />
     </main>
   );
 }
