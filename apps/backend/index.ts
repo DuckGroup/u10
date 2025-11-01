@@ -2,12 +2,13 @@ import express from "express";
 import { auth, requiresAuth } from "express-openid-connect";
 import { connectDB, prisma } from "./db";
 import dotenv from "dotenv";
-import { connectRabbitMQ } from "./src/repository/rabbitmq";
 import productRouter from "./src/routes/productRoutes";
 import userRouter from "./src/routes/userRoutes";
 import authRouter from "./src/routes/authRoutes";
 import orderRouter from "./src/routes/orderRoutes";
+import basketRouter from "./src/routes/basketRouter";
 import cors from "cors";
+import { connectRabbitMQ } from "./src/queues/connection";
 
 dotenv.config();
 connectDB();
@@ -42,11 +43,12 @@ const config = {
 };
 app.use(auth(config));
 
-app.use("/", userRouter);
+app.use("/users", userRouter);
 app.use("/product", productRouter);
 app.use("/orders", orderRouter)
 app.use("/auth", authRouter);
 
+app.use("/basket", basketRouter);
 app.get("/", (req, res) => {
   res.send(req.oidc.isAuthenticated() ? "Logged in" : "Logged out");
 });

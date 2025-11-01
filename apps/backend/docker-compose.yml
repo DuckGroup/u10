@@ -13,6 +13,20 @@ services:
     networks:
       - app-network
 
+  backend:
+    build: .
+    container_name: backend
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - DATABASE_URL=${DATABASE_URL}
+      - PORT=3012
+    ports:
+      - "3012:3012"
+    depends_on:
+      - rabbitmq
+    networks:
+      - app-network
+
 volumes:
   rabbitmq_data:
     name: rabbitmq_data
